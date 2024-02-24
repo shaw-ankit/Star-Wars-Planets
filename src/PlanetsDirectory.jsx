@@ -19,21 +19,27 @@ const PlanetsDirectory = () => {
   const [previousPlanets, setPerviousPlanets] = useState("");
   const [residentDetails, setResidentDetails] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState("");
-
-  const fetchDetails = (url) => fetch(url).then((res) => res.json());
-
+  const [loading,setLoading] = useState(false);
+  const [residentloading,setResidentLoading] = useState(false);
+  
+  const fetchDetails = (url) =>fetch(url).then((res) => res.json());
+  
   const getAllResidents = (residents) => {
+    setResidentLoading(true)
     Promise.all(residents.map(fetchDetails))
       .then(setResidentDetails)
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setResidentLoading(false));
   };
   //Fetching the planets api
   async function fetchPlanets(Url) {
+    setLoading(true)
     try {
       const data = await fetchDetails(Url);
       setPlanets(data.results);
       setNextPlanets(data.next);
       setPerviousPlanets(data.previous);
+      setLoading(false)
       console.log(data);
     } catch (error) {
       console.error("Planets data is not fetch", error);
@@ -43,8 +49,12 @@ const PlanetsDirectory = () => {
     fetchPlanets("https://swapi.dev/api/planets/?format=json");
   }, []);
 
+  if (loading) return <div className="home-loader"></div>
+  
+
   return (
     <>
+      { residentloading && <div className="loader"></div>}
       <div className="container">
         <h1>Star Wars Planets</h1>
         <div className="card-wrapper">
@@ -61,6 +71,7 @@ const PlanetsDirectory = () => {
                   <h6>CLIMATE: {planet.climate}</h6>
                   <h6>TERRAIN: {planet.terrain}</h6>
                 </div>
+                
                 {planet.residents.length > 0 ? (
                   <div className="button">
                     <button
@@ -69,7 +80,7 @@ const PlanetsDirectory = () => {
                         setSelectedPlanet(planet.name);
                         getAllResidents(planet.residents);
                       }}
-                    >
+                      >
                       View Residents
                     </button>
                   </div>

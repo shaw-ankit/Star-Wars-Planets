@@ -143,3 +143,77 @@
   background-color: #222;
   color: white;
 }
+
+/* Residents Details Loader */
+.loader {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(#000 0 0) left/0% 100% no-repeat #ddd;
+  animation: l17 2s infinite steps(6);
+  margin: 10px;
+}
+@keyframes l17 {
+    100% {background-size:120% 100%}
+}
+
+.home-loader{
+  position: absolute;
+  top: 270px;
+  left: 670px;
+  width: 200px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-right-color: #25b09b;
+  animation: l15 1s infinite linear;
+}
+.home-loader::before,
+.home-loader::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
+}
+.loader::after {
+  margin: 8px;
+  animation-duration: 3s;
+}
+@keyframes l15{ 
+  100%{transform: rotate(1turn)}
+}
+
+
+@media only screen and (max-width:1440px){
+  .home-loader{
+    left: 600px;
+    width: 200px;
+  }
+}
+@media only screen and (max-width:1024px){
+  .home-loader{
+    top:230px;
+    left: 440px;
+    width: 150px;
+  }
+}
+@media only screen and (max-width:768px){
+  .home-loader{
+    top: 180px;
+    left: 320px;
+    width: 100px;
+  }
+}
+@media only screen and (max-width:425px){
+  .home-loader{
+    top: 140px;
+    left: 180px;
+    width: 80px;
+  }
+  .container h1{
+    font-size: 35px;
+    margin: 20px 0px;
+  }
+}
